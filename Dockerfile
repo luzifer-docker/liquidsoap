@@ -5,7 +5,7 @@ ENV LIQUIDSOAP_SCRIPT=/etc/liquidsoap/liquidsoap.liq \
     LIQUIDSOAP_VERSION=1.3.3
 
 # Add package repo
-RUN echo "deb http://deb.debian.org/debian stable main contrib non-free" > /etc/apt/sources.list
+RUN echo "deb http://deb.debian.org/debian stable main contrib non-free" >> /etc/apt/sources.list
 
 # Set up dependencies
 RUN set -ex \
