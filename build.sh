@@ -13,6 +13,8 @@ dev_packages=(
 	libflac-dev # flac.0.1.3
 	libopus-dev # opus.0.1.2
 	libvorbis-dev # vorbis.0.7.0
+	lsb-release # Local: Remove only
+	m4 # Build-Dep
 )
 
 system_deps=(
@@ -53,11 +55,17 @@ ocaml_deps=(
 
 export DEBIAN_FRONTEND=noninteractive
 
+sudo apt-get update
+sudo apt-get install --no-install-recommends -y lsb-release
 echo "deb http://deb.debian.org/debian $(lsb_release -cs) non-free" |
 	sudo tee /etc/apt/sources.list.d/non-free.list
 
 sudo apt-get update
 sudo apt-get install --no-install-recommends -y "${dev_packages[@]}" "${system_deps[@]}"
+
+# The image comes with a local repo with no recent state. Re-add the
+# official repo on https://opam.ocaml.org in order to get updates...
+opam repo add official https://opam.ocaml.org
 
 opam update
 eval $(opam config env)
@@ -65,3 +73,8 @@ opam install -y "${ocaml_deps[@]}"
 
 sudo apt-get remove --purge -y "${dev_packages[@]}"
 sudo apt-get autoremove --purge -y
+
+# Install dumb-init
+sudo curl -sSfLo /usr/bin/dumb-init \
+	"https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_amd64"
+sudo chmod 0755 /usr/bin/dumb-init

@@ -1,8 +1,9 @@
-FROM ocaml/opam:debian
+FROM ocaml/opam2:debian-stable
 
 # Allows passing in a different script name, if desired.
-ENV LIQUIDSOAP_SCRIPT=/etc/liquidsoap/liquidsoap.liq \
-    LIQUIDSOAP_VERSION=1.3.3
+ENV DUMB_INIT_VERSION=1.2.2 \
+    LIQUIDSOAP_SCRIPT=/etc/liquidsoap/liquidsoap.liq \
+    LIQUIDSOAP_VERSION=1.3.4
 
 # Initialize OPAM and install Liquidsoap and asssociated packages
 COPY build.sh /usr/local/bin/build.sh
@@ -16,5 +17,5 @@ VOLUME ["/data", "/etc/liquidsoap"]
 EXPOSE 8080 8011
 
 # Start Liquidsoap with a path to the script defined in the variable
-ENTRYPOINT ["/home/liquidsoap/.opam/system/bin/liquidsoap"]
-CMD [${LIQUIDSOAP_SCRIPT}]
+COPY run.sh /usr/local/bin/run.sh
+ENTRYPOINT ["/usr/local/bin/run.sh"]
