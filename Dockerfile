@@ -3,7 +3,7 @@ FROM ocaml/opam2:debian-stable
 # Allows passing in a different script name, if desired.
 ENV DUMB_INIT_VERSION=1.2.2 \
     LIQUIDSOAP_SCRIPT=/etc/liquidsoap/liquidsoap.liq \
-    LIQUIDSOAP_VERSION=1.3.6
+    LIQUIDSOAP_VERSION=1.3.7
 
 # Initialize OPAM and install Liquidsoap and asssociated packages
 COPY build.sh /usr/local/bin/build.sh
